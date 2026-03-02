@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: gitops-microservice
-          image: swati9455/gitops-microservice-demo:87a5e06
+          image: swati9455/gitops-microservice-demo:cb9aa84
           ports:
             - containerPort: 80
