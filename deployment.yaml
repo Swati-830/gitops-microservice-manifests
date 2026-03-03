@@ -4,7 +4,12 @@ metadata:
   name: gitops-microservice
   namespace: swati
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app: gitops-microservice
@@ -16,6 +21,7 @@ spec:
       containers:
         - name: gitops-microservice
           image: swati9455/gitops-microservice-demo:d4271ae
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
@@ -23,3 +29,22 @@ spec:
               value: "v2"
             - name: ENV
               value: "development"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
